@@ -1,11 +1,13 @@
 ---
 name: git-commit
-description: 检查 Git 变更与项目提交约定，生成提交信息，或在用户明确要求时执行提交。适用于提交代码、整理本次提交范围和建议 commit message；生成信息不等于授权提交。
+description: "Git 提交 / Git Commit：检查变更、生成提交信息或按明确请求提交。Review changes, draft commit messages, or commit when explicitly requested. 生成信息 / draft a commit message 不授权暂存或提交。"
 ---
 
 # Git 提交
 
 围绕用户授权的变更完成提交，保留项目既有规范。单独调用 `$git-commit` 视为要求提交；用户要求“生成/建议提交信息”时只读分析并输出信息，不暂存、不提交。
+
+中英文请求均按同一语义处理：`draft/suggest a commit message` 只生成信息，`commit these changes` 表示执行提交。回复优先遵循用户明确的语言要求及适用语言约定，否则沿用当前对话的主要语言；不要把 skill 正文或默认提示词的语言当作用户偏好。
 
 ## 检查本次范围
 
@@ -19,7 +21,7 @@ description: 检查 Git 变更与项目提交约定，生成提交信息，或�
 ## 生成信息与提交
 
 1. 按项目约定选 type / scope；没有约定时用 `<type>(<scope>): <subject>`，scope 可省略。常用 `feat`、`fix`、`refactor`、`docs`、`chore`，按实际行为选择，不追求凑齐类别。
-2. 默认中文，用户要求或项目明确规定英文时用英文；兼容 `zh` / `en` 参数。subject 说明具体改动，长度与允许值以项目校验为准，不添加 AI 标记或共同作者。
+2. 提交信息语言依次遵循用户明确要求（含 `zh` / `en` 参数）、项目提交约定、近期提交的稳定语言；仍无依据时沿用当前对话语言。subject 说明具体改动，长度与允许值以项目校验为准，不添加 AI 标记或共同作者。
 3. 只生成信息时到此结束。执行提交时精确暂存已确认范围，复查 staged diff 与私有信息，再创建提交；不自动 push 或 amend。
 4. hook 失败先看错误，仅修正本次范围内的问题，再检查 hook 是否改动了文件并复核暂存内容后重试。不跳过 hook，不为通过提交顺手改无关代码；涉及新增范围时说明阻塞。
 5. 用最新 commit 的文件清单和 `git status -sb` 确认结果，核实应提交的共享规范确实在 commit 内；检查无关暂存内容仍保留。
