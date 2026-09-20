@@ -10,7 +10,7 @@
 
 | 调用 ID | 显示名称 | 用途 |
 | --- | --- | --- |
-| `project-conventions` | 项目开发规范 | 维护根目录 `CONVENTIONS.md`，随代码校准稳定约定，检查共享文档是否遗漏 |
+| `project-conventions` | 项目开发规范 | 维护开发及 UI 与交互约定，默认使用根目录 `CONVENTIONS.md`，引用已有设计文档并检查规范是否遗漏 |
 | `task-workflow` | 开发事项记录 | 用一份 `TASK.md` 记录目标、进度和验收，大型需求按需拆分 |
 | `git-commit` | Git 提交 | 检查提交范围、相关规范和暂存内容，按授权生成信息或执行提交 |
 
@@ -38,6 +38,7 @@ codex plugin add devflow-skills@haokejie
 ## 日常使用
 
 - “使用 project-conventions 初始化项目规范”或“检查规范是否过期”。
+- “整理 UI 设计规范”或“检查本次界面修改是否符合项目约定”。简单约定写在 `CONVENTIONS.md`；已有设计文档直接引用，内容较多时才拆出 `DESIGN.md`，无需重复维护。
 - “规划开发事项”只记录计划；“处理开发事项”进入实施；普通修复不自动创建 `.task`。
 - “生成提交信息”只读；“提交本次改动”才暂存和提交。
 

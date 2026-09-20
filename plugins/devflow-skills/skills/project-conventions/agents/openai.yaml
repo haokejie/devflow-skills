@@ -1,4 +1,4 @@
 interface:
   display_name: "项目开发规范"
-  short_description: "维护根目录项目规范，随代码校准稳定约定并检查共享文档是否遗漏"
-  default_prompt: "使用 $project-conventions 按当前源码维护项目规范；回复沿用当前对话语言，已有文档保留其语言。"
+  short_description: "维护项目开发与界面交互规范，校准稳定约定并检查共享文档是否遗漏"
+  default_prompt: "使用 $project-conventions 按已确认要求与项目实现维护相关规范，涉及界面时包含设计与交互约定；已有文档保留其语言。"
