@@ -1,0 +1,4 @@
+interface:
+  display_name: "项目开发规范"
+  short_description: "维护根目录项目规范，随代码校准约定并检查共享文档是否遗漏"
+  default_prompt: "使用 $project-conventions 按当前源码初始化、更新或检查项目开发规范，默认维护根目录 CONVENTIONS.md。"
