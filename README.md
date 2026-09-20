@@ -18,14 +18,14 @@
 
 ## 安装插件
 
-需要支持 `codex plugin` 命令的 Codex。添加此仓库为插件来源，再安装插件：
+需要支持 `codex plugin` 命令的 Codex。以下命令可在终端的任意目录执行，无需先下载项目源码：
 
 ```sh
 codex plugin marketplace add haokejie/devflow-skills
 codex plugin add devflow-skills@haokejie
 ```
 
-安装后新建一个 Codex 任务使用。也可以在插件目录中选择此来源，找到 **DevFlow Skills · 开发流程**。
+安装后新建一个 Codex 任务使用。也可以在插件目录中选择此来源，找到 **DevFlow Skills · 开发流程**。**如果只想使用三个 skill，到这里就完成了，无需执行下面的全局偏好导入。**
 
 已将仓库克隆到本地时，也可在仓库根目录执行 `codex plugin marketplace add .`，然后运行相同的安装命令。市场名是 `haokejie`，插件 ID 是 `devflow-skills`。
 
@@ -39,22 +39,47 @@ codex plugin add devflow-skills@haokejie
 
 ## 可选：导入个人全局偏好
 
-插件安装不会自动修改全局 `AGENTS.md`。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；建议先检查并按自己的环境调整。
+这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
 
-下面的命令在克隆后的仓库根目录执行：
+安装插件只会把插件文件放进 Codex 管理的安装目录，**不会在终端当前目录创建 `plugins/devflow-skills/` 源码路径**。要运行本节的脚本，需要单独下载仓库。
+
+### 1. 下载源码并进入仓库
+
+以下适用于尚未下载源码的新机器（需要 Git）。在终端逐行执行，每一步成功后再继续：
 
 ```sh
-# 默认预览，不修改配置
+cd ~
+git clone https://github.com/haokejie/devflow-skills.git
+cd devflow-skills
+```
+
+这样源码位于当前用户的 `~/devflow-skills/`。如果已下载过，请直接进入实际仓库目录，无需重复克隆。后续命令都在这个仓库目录中执行。
+
+### 2. 预览导入
+
+```sh
 python3 plugins/devflow-skills/scripts/install_profile.py
+```
 
-# 目标不存在时写入；内容已一致时不重复处理
+默认只显示目标位置和计划操作，不修改配置。提示“内容已一致”时无需再导入。
+
+### 3. 按需要写入或替换
+
+首次导入、目标文件不存在时：
+
+```sh
 python3 plugins/devflow-skills/scripts/install_profile.py --apply
+```
 
-# 明确替换已有不同规则，自动保留备份
+如果提示已有不同规则，确认要替换后执行下面的命令；脚本会先备份原文件，并显示备份位置：
+
+```sh
 python3 plugins/devflow-skills/scripts/install_profile.py --apply --replace
 ```
 
-默认使用已设置的 `CODEX_HOME`，否则使用用户目录下的 `.codex`；通过 `--codex-home /path/to/config` 可以指定其他位置。Windows 可用 `py -3` 替换 `python3`。导入工具需要 Python 3.9+，仅使用标准库。
+`--apply` 表示实际写入，`--replace` 表示允许备份后替换已有不同规则。默认目标是 `~/.codex/AGENTS.md`；设置了 `CODEX_HOME` 时使用该目录下的 `AGENTS.md`，也可通过 `--codex-home /path/to/config` 指定目录。Windows 可用 `py -3` 替换 `python3`。导入工具需要 Python 3.9+，仅使用标准库。
+
+如果报 `can't open file ... [Errno 2] No such file or directory`，说明 Python 没有找到脚本。检查是否完成了下载和 `cd devflow-skills`：`plugins/...` 是相对当前目录的路径，直接在 `~` 下运行会错误地寻找 `~/plugins/...`。这个报错发生在脚本启动前，不会修改全局规则。
 
 账号密码、机器私有配置和第三方登录状态单独保存，不随插件分发。项目允许经授权保存本地凭证，但要求目标未被 Git 跟踪、已明确忽略，且真实值不能进入共享文档或提交。
 
