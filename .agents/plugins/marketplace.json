@@ -1,7 +1,7 @@
 {
   "name": "haokejie",
   "interface": {
-    "displayName": "Haokejie"
+    "displayName": "浩克的插件库"
   },
   "plugins": [
     {
