@@ -1,6 +1,6 @@
 {
   "name": "devflow-skills",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260920064832",
   "description": "面向 Codex 的轻量开发流程插件，包含项目规范、任务记录和 Git 提交三个 skill。",
   "author": {
     "name": "haokejie"
@@ -11,6 +11,7 @@
     "shortDescription": "项目规范、任务记录与 Git 提交的轻量 skill 集合。",
     "longDescription": "基于个人实践整理的社区插件，通过三个独立 skill 帮助维护项目规范、记录开发事项和准备 Git 提交。另附可选的个人偏好模板；各项规则应按项目需要调整。非 OpenAI 官方项目。",
     "developerName": "haokejie",
+    "websiteURL": "https://github.com/haokejie/devflow-skills",
     "category": "Productivity",
     "capabilities": [
       "Read",
