@@ -1,5 +1,7 @@
 # DevFlow Skills
 
+<img src="plugins/devflow-skills/assets/icon.png" alt="DevFlow Skills 图标" width="96" height="96" />
+
 面向 Codex 的轻量开发流程插件，包含项目规范、任务记录和 Git 提交三个 skill。
 
 这是基于个人实践整理的社区项目，适合按自己的开发习惯调整。它提供可复用的流程说明和文档模板，具体执行仍依赖 Codex 与项目已有工具。非 OpenAI 官方项目。
