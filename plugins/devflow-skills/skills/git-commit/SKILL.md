@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: "Git 提交 / Git Commit：检查变更、生成提交信息或按明确请求提交。Review changes, draft commit messages, or commit when explicitly requested. 生成信息 / draft a commit message 不授权暂存或提交。"
+description: "检查 Git 变更与项目提交约定，生成提交信息，或在用户明确要求时执行提交。生成信息不等于授权暂存或提交。"
 ---
 
 # Git 提交

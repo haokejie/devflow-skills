@@ -1,6 +1,6 @@
 ---
 name: task-workflow
-description: "开发事项记录 / Task Workflow：明确要求用 .task 规划、记录进度、继续或迁移开发事项时使用。Plan development work, track progress, resume or migrate task records. 普通代码修改不自动建记录；单说创建任务 / create a task 不代表创建 .task 文档。"
+description: "明确要求用 .task 规划、记录进度、继续或迁移开发事项时使用。普通代码修改不自动建记录；单说创建任务不代表创建 .task 文档。"
 ---
 
 # 开发事项记录

@@ -3,7 +3,7 @@
 ## 项目与边界
 
 - 本仓库是社区维护的轻量 Codex 插件项目，包含一个 `devflow-skills` 插件和三个独立 skill，不依赖 MCP 服务。
-- 仓库为 `haokejie/devflow-skills`，市场名为 `haokejie`，仓库说明以中文维护；skill 显示名与触发描述提供中英文，执行时按用户和项目语言约定输出。
+- 仓库为 `haokejie/devflow-skills`，市场名为 `haokejie`，仓库说明以中文维护；插件与 skill 的显示名称和说明统一使用中文，英文调用 ID 保持稳定，执行时按用户和项目语言约定输出。
 - 插件源码在 `plugins/devflow-skills/`；`.agents/plugins/marketplace.json` 是仓库级插件目录，来源路径相对仓库根目录。
 - `.codex-plugin/plugin.json` 是当前唯一插件清单，采用内置 plugin-creator 支持的兼容格式；名称、版本和展示信息在此维护。
 - `profiles/global-agents.md` 是全局偏好的分发模板，不是本项目的开发指令；导入工具显式执行后才会写入用户配置。

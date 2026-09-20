@@ -1,4 +1,4 @@
 interface:
-  display_name: "开发事项记录 · Task Workflow"
-  short_description: "记录任务计划、进度与验收 / Track task plans, progress and checks"
+  display_name: "开发事项记录"
+  short_description: "用单份文档记录开发事项，按需拆分大型需求并保留进度与验收结果"
   default_prompt: "使用 $task-workflow 规划、处理或继续开发事项，沿用当前对话与已有任务文档的语言。"

@@ -1,6 +1,6 @@
 ---
 name: project-conventions
-description: "项目开发规范 / Project Conventions：初始化、维护、检查或迁移项目约定。Initialize, update, check or migrate project conventions in CONVENTIONS.md. 用于规范维护与漂移检查；普通开发读取现有规范即可，不必完整初始化。"
+description: "初始化、维护、检查或迁移项目开发约定，默认维护根目录 CONVENTIONS.md。用于规范维护与漂移检查；普通开发读取现有规范即可，不必完整初始化。"
 ---
 
 # 项目开发规范
