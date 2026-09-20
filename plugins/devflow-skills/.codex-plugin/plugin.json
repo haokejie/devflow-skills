@@ -1,6 +1,6 @@
 {
   "name": "devflow-skills",
-  "version": "0.1.0+codex.20260920073034",
+  "version": "0.1.1",
   "description": "面向 Codex 的轻量开发流程插件，包含项目规范、任务记录和 Git 提交三个 skill。",
   "author": {
     "name": "haokejie"
