@@ -8,8 +8,8 @@ import unittest
 from unittest.mock import patch
 
 
-PLUGIN = Path(__file__).resolve().parents[1] / "plugins" / "devflow-skills"
-sys.path.insert(0, str(PLUGIN / "scripts"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 
 from install_profile import PROFILE, default_config_dir, install_profile, main
 

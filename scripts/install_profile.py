@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import the bundled global preferences only when explicitly requested."""
+"""Import the repository's global preferences only when explicitly requested."""
 
 from __future__ import annotations
 

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 
-PLUGIN = Path(__file__).resolve().parents[1]
+PLUGIN = Path(__file__).resolve().parents[1] / "plugins" / "devflow-skills"
 
 
 def compatibility_manifest(portable: dict) -> dict:

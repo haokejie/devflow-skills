@@ -1,0 +1,4 @@
+interface:
+  display_name: "禅道工作流"
+  short_description: "复用界面中已连接的禅道 MCP，分析 Bug 与附件并按授权修复"
+  default_prompt: "使用 $zentao-workflow 分析禅道 Bug 1234，先查看截图与附件，保持只读。"

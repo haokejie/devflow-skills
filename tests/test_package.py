@@ -8,7 +8,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "devflow-skills"
-sys.path.insert(0, str(PLUGIN / "scripts"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 from sync_manifest import sync_manifest
 
@@ -65,9 +65,16 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(mtime, target.stat().st_mtime_ns)
             self.assertEqual(updated, json.loads(source.read_text()))
 
-    def test_all_three_skills_are_shipped_with_resources(self):
+    def test_zentao_connection_is_not_bundled(self):
+        for filename in ["mcp.json", ".mcp.json", ".app.json"]:
+            self.assertFalse((PLUGIN / filename).exists(), filename)
+        codex = json.loads((PLUGIN / ".codex-plugin/plugin.json").read_text())
+        self.assertNotIn("mcpServers", codex)
+        self.assertNotIn("apps", codex)
+
+    def test_all_four_skills_are_shipped_with_resources(self):
         skills = PLUGIN / "skills"
-        expected = {"project-conventions", "task-workflow", "git-commit"}
+        expected = {"project-conventions", "task-workflow", "git-commit", "zentao-workflow"}
         self.assertEqual(expected, {p.name for p in skills.iterdir() if p.is_dir()})
         for name in expected:
             self.assertTrue((skills / name / "SKILL.md").is_file())
