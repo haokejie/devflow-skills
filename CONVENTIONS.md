@@ -7,7 +7,7 @@
 - 插件源码在 `plugins/devflow-skills/`，仅保留清单、skill 及其使用资源、展示图标和许可证。导入和清单同步工具位于仓库根目录 `scripts/`，全局偏好模板位于根目录 `profiles/`，均不随插件目录分发。`.agents/plugins/marketplace.json` 是仓库级插件目录，来源路径相对仓库根目录。
 - 插件根目录 `plugin.json` 是唯一维护的清单，采用 Agent Plugins 1.0.0；名称、版本和共享元数据在此维护，Codex 展示信息放在 `extensions.com.openai.interface`。四个 skill 和参考资源跨宿主共用，不复制正文。
 - `.codex-plugin/plugin.json` 是提交到仓库的生成兼容文件，在仓库根目录通过 `python3 scripts/sync_manifest.py --write` 同步，不手工编辑。保留它兼容已有 Codex 市场和清单工具；相关入口全部支持通用格式后才评估删除。默认或 `--check` 只检查一致性。
-- 仓库根目录的 `profiles/global-agents.md` 是可选全局偏好模板，不是本项目的开发指令；导入工具显式执行后才会写入用户配置。
+- 仓库根目录的 `profiles/global-agents.md` 是可选全局偏好模板，不是本项目的开发指令；导入工具显式执行后才会写入用户配置。禅道条目只保留 skill 使用入口与授权边界，具体流程在 `zentao-workflow` 中维护。
 
 ## 维护约定
 

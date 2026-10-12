@@ -53,6 +53,6 @@
 
 ## 专项偏好
 
-- 禅道：只给 Bug 编号或要求分析时只读，不改代码或状态；明确要求修复才实施。带图片、截图、附件或 `fileID` 时先查看再下结论，下载到仓库外临时目录，例如 `/tmp/zentao-mcp/bug-1234/`。
+- 禅道相关任务使用可用的 `zentao-workflow` skill；仅发送 `bug#1234` 也直接按禅道 Bug 分析请求处理。仅分析时保持只读，修复代码与回写禅道分别需要明确授权。
 - 持久 JavaScript 环境：临时变量放块级作用域；跨调用状态放有任务前缀的 `globalThis` 属性，避免重复声明顶层 `let` / `const`。
 - Go 使用 `asdf` 管理；执行前用 `asdf current golang` 和 `go version` 核实，不绕过到 Homebrew Go。升级时同步检查项目 `.tool-versions`、`go.work` 与各模块 `go.mod`。

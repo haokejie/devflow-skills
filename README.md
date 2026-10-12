@@ -78,7 +78,7 @@ devin plugins install --local ./plugins/devflow-skills
 - “整理 UI 设计规范”或“检查本次界面修改是否符合项目约定”。整理时没有现成设计规范就创建根目录 `DESIGN.md`，已有明确入口则沿用；`CONVENTIONS.md` 只保留链接。普通页面开发和只读检查不自动建文档。
 - “规划开发事项”只记录计划；“处理开发事项”进入实施；普通修复不自动创建 `.task`。
 - “生成提交信息”只读；“提交本次改动”才暂存和提交。
-- “使用 zentao-workflow 分析禅道 Bug 1234，先查看截图与附件。”只读；“修复禅道 Bug 1234”才修改业务代码，回写禅道另需明确授权。
+- 直接发送 `bug#1234` 或要求“使用 zentao-workflow 分析禅道 Bug 1234，先查看截图与附件”，会使用禅道 skill 做只读分析；“修复禅道 Bug 1234”才修改业务代码，回写禅道另需明确授权。
 
 若存在同名 skill，确认插件可用后停用重复副本。
 
@@ -106,7 +106,7 @@ devin plugins install --local ./plugins/devflow-skills
 
 ## 可选：导入个人全局偏好
 
-这一步把 [偏好模板](profiles/global-agents.md) 写入当前机器的全局 `AGENTS.md`，按需使用。模板包含浏览器、CDP、禅道和 Go 工具链习惯，请先按自己的环境调整。项目私有资料默认存放在项目根目录的 `.devflow/local.md`，已有入口时沿用。
+这一步把 [偏好模板](profiles/global-agents.md) 写入当前机器的全局 `AGENTS.md`，按需使用。模板包含浏览器、CDP 和 Go 工具链习惯，并保留禅道 skill 的使用入口与授权边界，具体流程由 `zentao-workflow` 维护。请先按自己的环境调整。项目私有资料默认存放在项目根目录的 `.devflow/local.md`，已有入口时沿用。
 
 偏好模板与导入脚本都位于仓库层。要执行本节的导入，需要单独下载仓库；安装插件不会提供全局偏好模板或维护工具。
 
