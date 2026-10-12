@@ -79,7 +79,7 @@ devin plugins install --local ./plugins/devflow-skills
 
 ## 可选：导入个人全局偏好
 
-这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。已有全局偏好时可跳过。各 AI 工具共用模板，项目私有资料沿用已有入口，没有时统一使用 `.codex/local.md`；这个名称不要求使用 Codex。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
+这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。已有全局偏好时可跳过。各 AI 工具共用模板，项目私有资料沿用已有入口，没有时统一使用项目根目录的 `.devflow/local.md`。这个独立入口由各工具共用，与软件读取全局 `AGENTS.md` 的配置目录分开。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
 
 从远端安装插件不会在终端当前目录创建 `plugins/devflow-skills/` 源码路径。要运行本节的脚本，需要单独下载仓库。
 
