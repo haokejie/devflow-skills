@@ -79,7 +79,7 @@ devin plugins install --local ./plugins/devflow-skills
 
 ## 可选：导入个人全局偏好
 
-这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。已有全局偏好时可跳过。两种宿主共用模板，私有资料位置按宿主选择并优先沿用项目已有入口。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
+这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。已有全局偏好时可跳过。各 AI 工具共用模板，项目私有资料沿用已有入口，没有时统一使用 `.codex/local.md`；这个名称不要求使用 Codex。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
 
 从远端安装插件不会在终端当前目录创建 `plugins/devflow-skills/` 源码路径。要运行本节的脚本，需要单独下载仓库。
 
@@ -95,37 +95,37 @@ cd devflow-skills
 
 这样源码位于当前用户的 `~/devflow-skills/`。如果已下载过，请直接进入实际仓库目录，无需重复克隆。后续命令都在这个仓库目录中执行。
 
-### 2. 预览导入
+### 2. 选择目录并预览导入
 
 ```sh
 python3 plugins/devflow-skills/scripts/install_profile.py
 ```
 
-默认只显示 Codex 目标位置和计划操作，不修改配置。提示“内容已一致”时无需再导入。Devin 使用：
+默认只预览，不修改配置。省略目录时保留原有行为：使用 `CODEX_HOME`，未设置时使用 `~/.codex`。提示“内容已一致”时无需再导入。
+
+导入到其他位置统一使用 `--config-dir`，脚本不判断 Codex、Devin 或操作系统。例如 Devin 在 macOS / Linux 使用：
 
 ```sh
-python3 plugins/devflow-skills/scripts/install_profile.py --agent devin
+python3 plugins/devflow-skills/scripts/install_profile.py --config-dir ~/.config/devin
 ```
+
+Devin 在 Windows 使用 `%APPDATA%\devin`，PowerShell 示例为 `py -3 plugins/devflow-skills/scripts/install_profile.py --config-dir "$env:APPDATA\devin"`。原 `--agent devin` 参数已移除，改为显式指定目录。`--codex-home` 保留为 `--config-dir` 的兼容别名。
 
 ### 3. 按需要写入或替换
 
-首次导入、目标文件不存在时：
+首次导入、目标文件不存在时，在预览命令末尾加上 `--apply`；保留预览时选择的目录。例如：
 
 ```sh
-python3 plugins/devflow-skills/scripts/install_profile.py --apply
+python3 plugins/devflow-skills/scripts/install_profile.py --config-dir ~/.config/devin --apply
 ```
-
-Devin 首次导入对应命令是 `python3 plugins/devflow-skills/scripts/install_profile.py --agent devin --apply`。已有不同规则时同样需要明确添加 `--replace`。
 
 如果提示已有不同规则，确认要替换后执行下面的命令；脚本会先备份原文件，并显示备份位置：
 
 ```sh
-python3 plugins/devflow-skills/scripts/install_profile.py --apply --replace
+python3 plugins/devflow-skills/scripts/install_profile.py --config-dir ~/.config/devin --apply --replace
 ```
 
-`--apply` 表示实际写入，`--replace` 表示允许备份后替换已有不同规则。默认宿主仍是 Codex，原来的命令继续有效：默认写入 `~/.codex/AGENTS.md`，设置了 `CODEX_HOME` 时使用该目录，也保留 `--codex-home /path/to/config` 参数。
-
-`--agent devin` 在 macOS / Linux 默认写入 `~/.config/devin/AGENTS.md`，Windows 写入 `%APPDATA%\devin\AGENTS.md`。两种宿主都可用 `--config-dir /path/to/config` 明确指定实际配置目录。`--codex-home` 不能与 `--agent devin` 混用；符号链接不会被覆盖，需要显式指定实际目标目录。全局规则在新会话开始时加载，见 [Devin 全局规则文档](https://docs.devin.ai/cli/extensibility/rules)。
+`--apply` 表示实际写入，`--replace` 表示允许备份后替换已有不同规则。使用自定义目录时，在同一条命令中保留 `--config-dir` 并加上 `--apply --replace`；写入的是该目录下的 `AGENTS.md`。符号链接不会被覆盖，需要显式指定实际目标目录。全局规则在新会话开始时加载，见 [Devin 全局规则文档](https://docs.devin.ai/cli/extensibility/rules)。
 
 Windows 可用 `py -3` 替换 `python3`。导入工具需要 Python 3.9+，仅使用标准库；安装或更新插件不会执行此导入，也不会改写现有全局配置。
 
@@ -161,7 +161,7 @@ python3 plugins/devflow-skills/scripts/sync_manifest.py --check
 python3 -m unittest discover -s tests -v
 ```
 
-测试覆盖两个宿主的偏好导入、旧参数兼容、预览、重复执行、覆盖与备份边界，以及双格式清单一致性、插件目录和资源引用。发布前还需使用内置 plugin-creator 和 skill-creator 校验清单与 skill，并按通用清单的官方 schema 校验格式。静态校验不代表已在 Devin 新会话完成运行验证。项目约定见 [CONVENTIONS.md](CONVENTIONS.md)。
+测试覆盖显式目录与原有默认位置、旧参数兼容、预览、重复执行、覆盖与备份边界，以及双格式清单一致性、插件目录和资源引用。发布前还需使用内置 plugin-creator 和 skill-creator 校验清单与 skill，并按通用清单的官方 schema 校验格式。静态校验不代表已在 Devin 新会话完成运行验证。项目约定见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 反馈问题或提出改进可使用 [Issues](https://github.com/haokejie/devflow-skills/issues) 或 Pull Request。
 

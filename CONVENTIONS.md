@@ -13,7 +13,7 @@
 
 - 本仓库是后续维护源；已安装插件缓存及旧独立 skill 是运行副本，不反向覆盖源码。
 - 三个 skill 继续各自负责规范、任务记录和提交，按需加载参考资料；同一规则只在负责它的文档中维护。
-- 导入和清单同步工具使用 Python 3.9+ 标准库。导入默认宿主为 Codex，保留 `CODEX_HOME` 和 `--codex-home`；`--agent devin` 使用其用户配置目录，两种宿主均可用 `--config-dir` 明确指定目录。不写死用户名，不把项目中已有私有资料复制到另一份宿主目录。
+- 导入和清单同步工具使用 Python 3.9+ 标准库。导入只通过 `--config-dir` 指定目录，不判断 AI 工具或操作系统；省略参数时保留原有 `CODEX_HOME` 或 `~/.codex` 默认位置，`--codex-home` 仅作同一参数的兼容别名。不写死用户名，项目私有资料入口按全局与项目约定共用。
 - 导入默认只预览；`--apply` 才写入。已有不同内容需要 `--replace`，替换前备份；相同内容重复导入不产生备份。
 - 不把真实账号密码、token、机器私有配置或生成缓存打包进插件。具体边界见全局模板，项目示例只使用虚构值。
 
@@ -22,7 +22,7 @@
 ## 验证
 
 - `python3 plugins/devflow-skills/scripts/sync_manifest.py --check`：核对生成清单与通用清单是否一致。
-- `python3 -m unittest discover -s tests -v`：验证两个宿主的配置定位、旧导入参数兼容、预览、幂等、备份和覆盖边界，以及插件资源结构和双格式清单契约。
+- `python3 -m unittest discover -s tests -v`：验证显式目录与原有默认位置、旧导入参数兼容、预览、幂等、备份和覆盖边界，以及插件资源结构和双格式清单契约。
 - 通用清单按 `$schema` 指向的官方 schema 校验；不得把 Codex 专有字段放到通用清单根层级。
 - 交付前使用当前内置 plugin-creator 的 `validate_plugin.py` 校验插件目录，使用 skill-creator 的 `quick_validate.py` 校验三个 skill。
 - 安装检查需区分“源码校验通过”和“已安装并在新会话启用”；创建项目本身不会替换现有全局配置或停用旧 skill。
