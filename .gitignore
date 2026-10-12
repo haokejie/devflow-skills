@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 /.devflow/local.md
-# 历史私有入口继续忽略，避免误收录已有资料。
 /.codex/local.md
 /.devin/local.md
 /.env

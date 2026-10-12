@@ -18,7 +18,7 @@
 
 ### 显示与输出语言
 
-插件与 skill 的显示名称和说明统一使用中文；英文调用 ID 保持不变，原有调用方式继续有效。仍可用中文或英文描述需求，生成提交信息不代表授权执行提交。
+插件与 skill 的显示名称和说明统一使用中文，调用 ID 使用英文。可用中文或英文描述需求，生成提交信息不代表授权执行提交。
 
 回复优先遵循明确的语言要求及项目/全局约定，没有约定时跟随当前对话语言。已有文档保持原语言，新文档和提交信息优先沿用项目的语言约定；需要其他语言时可明确指定。配套全局偏好模板也采用对话语言默认值，更新插件不会覆盖你本机已有的全局规则。
 
@@ -39,7 +39,7 @@ codex plugin add devflow-skills@haokejie
 
 ### Devin Local / Devin CLI
 
-需要已登录且支持 `devin plugins` 的 Devin CLI。Devin Desktop 的 Devin Local 使用同一套 Agent 插件能力；这里安装的是 Agent 插件，不是编辑器的 VS Code 扩展，也不适用于旧 Cascade。
+需要已登录且支持 `devin plugins` 的 Devin CLI。Devin Desktop 的 Devin Local 使用同一套 Agent 插件能力。
 
 仅安装在当前机器：
 
@@ -66,7 +66,7 @@ devin plugins install --local ./plugins/devflow-skills
 
 也可直接用下面的自然语言请求。单独显式调用提交技能表示要求提交；只想获取提交信息时请同时写明“仅生成提交信息”。技能正文与模板由 Codex 和 Devin 共用，无需维护两份。`agents/openai.yaml` 只提供 Codex 展示信息，Devin 使用 `SKILL.md`。
 
-加载格式依据 [Devin 插件文档](https://docs.devin.ai/cli/extensibility/plugins/overview)。实际安装与会话加载仍需在相应宿主中验证。
+加载格式见 [Devin 插件文档](https://docs.devin.ai/cli/extensibility/plugins/overview)。
 
 ## 日常使用
 
@@ -75,11 +75,11 @@ devin plugins install --local ./plugins/devflow-skills
 - “规划开发事项”只记录计划；“处理开发事项”进入实施；普通修复不自动创建 `.task`。
 - “生成提交信息”只读；“提交本次改动”才暂存和提交。
 
-安装插件不会覆盖原有独立 skill。若以前安装过同名 skill，确认插件可用后再停用旧副本，避免重复发现。
+若存在同名 skill，确认插件可用后停用重复副本。
 
 ## 可选：导入个人全局偏好
 
-这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。已有全局偏好时可跳过。各 AI 工具共用模板，项目私有资料沿用已有入口，没有时统一使用项目根目录的 `.devflow/local.md`。这个独立入口由各工具共用，与软件读取全局 `AGENTS.md` 的配置目录分开。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
+这一步把 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 写入当前机器的全局 `AGENTS.md`，按需使用。模板包含浏览器、CDP、禅道和 Go 工具链习惯，请先按自己的环境调整。项目私有资料默认存放在项目根目录的 `.devflow/local.md`，已有入口时沿用。
 
 从远端安装插件不会在终端当前目录创建 `plugins/devflow-skills/` 源码路径。要运行本节的脚本，需要单独下载仓库。
 
@@ -101,15 +101,15 @@ cd devflow-skills
 python3 plugins/devflow-skills/scripts/install_profile.py
 ```
 
-默认只预览，不修改配置。省略目录时保留原有行为：使用 `CODEX_HOME`，未设置时使用 `~/.codex`。提示“内容已一致”时无需再导入。
+默认只预览，不修改配置。省略目录时使用 `CODEX_HOME`，未设置时使用 `~/.codex`。提示“内容已一致”时无需再导入。
 
-导入到其他位置统一使用 `--config-dir`，脚本不判断 Codex、Devin 或操作系统。例如 Devin 在 macOS / Linux 使用：
+通过 `--config-dir` 指定目标软件读取全局 `AGENTS.md` 的目录。例如 Devin 在 macOS / Linux 使用：
 
 ```sh
 python3 plugins/devflow-skills/scripts/install_profile.py --config-dir ~/.config/devin
 ```
 
-Devin 在 Windows 使用 `%APPDATA%\devin`，PowerShell 示例为 `py -3 plugins/devflow-skills/scripts/install_profile.py --config-dir "$env:APPDATA\devin"`。原 `--agent devin` 参数已移除，改为显式指定目录。`--codex-home` 保留为 `--config-dir` 的兼容别名。
+Devin 在 Windows 使用 `%APPDATA%\devin`，PowerShell 示例为 `py -3 plugins/devflow-skills/scripts/install_profile.py --config-dir "$env:APPDATA\devin"`。
 
 ### 3. 按需要写入或替换
 
@@ -150,7 +150,7 @@ Codex 更新后在新任务中使用。Devin 远端来源安装后使用 `devin 
 python3 plugins/devflow-skills/scripts/sync_manifest.py --write
 ```
 
-此命令生成 `.codex-plugin/plugin.json` 兼容清单；默认或 `--check` 只检查是否已同步，不写文件。保留兼容清单用于现有 Codex 市场和清单校验工具，直到这些入口全部支持通用格式后再评估移除。
+此命令生成 `.codex-plugin/plugin.json`；默认或 `--check` 只检查是否已同步，不写文件。
 
 通用清单采用 [Agent Plugins 1.0.0](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json)，Codex 展示元数据位于 `extensions.com.openai.interface`。Devin 读取通用清单和同一份 `skills/`；三个技能不依赖 MCP 服务。
 
@@ -161,7 +161,7 @@ python3 plugins/devflow-skills/scripts/sync_manifest.py --check
 python3 -m unittest discover -s tests -v
 ```
 
-测试覆盖显式目录与原有默认位置、旧参数兼容、预览、重复执行、覆盖与备份边界，以及双格式清单一致性、插件目录和资源引用。发布前还需使用内置 plugin-creator 和 skill-creator 校验清单与 skill，并按通用清单的官方 schema 校验格式。静态校验不代表已在 Devin 新会话完成运行验证。项目约定见 [CONVENTIONS.md](CONVENTIONS.md)。
+测试覆盖目录选择、参数别名、预览、幂等、备份与覆盖边界，以及清单一致性和资源引用。完整验证要求见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 反馈问题或提出改进可使用 [Issues](https://github.com/haokejie/devflow-skills/issues) 或 Pull Request。
 
