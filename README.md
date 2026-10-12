@@ -2,9 +2,9 @@
 
 <img src="plugins/devflow-skills/assets/icon.png" alt="DevFlow Skills 图标" width="96" height="96" />
 
-面向 Codex 的轻量开发流程插件，包含项目规范、任务记录和 Git 提交三个 skill。
+面向 Codex 与 Devin 的轻量开发流程插件，包含项目规范、任务记录和 Git 提交三个 skill。
 
-这是基于个人实践整理的社区项目，适合按自己的开发习惯调整。它提供可复用的流程说明和文档模板，具体执行仍依赖 Codex 与项目已有工具。非 OpenAI 官方项目。
+这是基于个人实践整理的社区项目，适合按自己的开发习惯调整。它提供可复用的流程说明和文档模板，具体执行依赖当前 AI 宿主与项目已有工具。非 OpenAI 或 Cognition 官方项目。
 
 ## 包含什么
 
@@ -24,6 +24,8 @@
 
 ## 安装插件
 
+### Codex
+
 需要支持 `codex plugin` 命令的 Codex。以下命令可在终端的任意目录执行，无需先下载项目源码：
 
 ```sh
@@ -34,6 +36,37 @@ codex plugin add devflow-skills@haokejie
 安装后新建一个 Codex 任务使用。也可以在插件目录中选择此来源，找到 **开发流程**。**如果只想使用三个 skill，到这里就完成了，无需执行下面的全局偏好导入。**
 
 已将仓库克隆到本地时，也可在仓库根目录执行 `codex plugin marketplace add .`，然后运行相同的安装命令。市场名是 `haokejie`，插件 ID 是 `devflow-skills`。
+
+### Devin Local / Devin CLI
+
+需要已登录且支持 `devin plugins` 的 Devin CLI。Devin Desktop 的 Devin Local 使用同一套 Agent 插件能力；这里安装的是 Agent 插件，不是编辑器的 VS Code 扩展，也不适用于旧 Cascade。
+
+仅安装在当前机器：
+
+```sh
+devin plugins install --local 'haokejie/devflow-skills#plugins/devflow-skills'
+devin plugins info devflow-skills
+```
+
+`#plugins/devflow-skills` 指向真正的插件子目录。不要省略它：仓库根目录是 Codex 插件市场，技能包位于子目录中。`--local` 避免把安装同步到 Devin Cloud 的个人插件清单；确实希望账号同步时可省略此参数。插件管理需要正常的 Devin 登录及账号策略允许，安装前查看 CLI 显示的插件内容。
+
+本地源码开发时，在仓库根目录运行：
+
+```sh
+devin plugins install --local ./plugins/devflow-skills
+```
+
+安装后新建 Devin Local / CLI 会话使用。这三个技能的显式调用方式为：
+
+```text
+/devflow-skills:project-conventions
+/devflow-skills:task-workflow
+/devflow-skills:git-commit
+```
+
+也可直接用下面的自然语言请求。单独显式调用提交技能表示要求提交；只想获取提交信息时请同时写明“仅生成提交信息”。技能正文与模板由 Codex 和 Devin 共用，无需维护两份。`agents/openai.yaml` 只提供 Codex 展示信息，Devin 使用 `SKILL.md`。
+
+加载格式依据 [Devin 插件文档](https://docs.devin.ai/cli/extensibility/plugins/overview)。实际安装与会话加载仍需在相应宿主中验证。
 
 ## 日常使用
 
@@ -46,9 +79,9 @@ codex plugin add devflow-skills@haokejie
 
 ## 可选：导入个人全局偏好
 
-这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
+这一步用于把提供的规则模板写入**当前执行命令这台机器**的全局 `AGENTS.md`，不是安装插件的必要步骤。已有全局偏好时可跳过。两种宿主共用模板，私有资料位置按宿主选择并优先沿用项目已有入口。共享的 [偏好模板](plugins/devflow-skills/profiles/global-agents.md) 包含个人浏览器、CDP、禅道和 Go 工具链习惯；请先检查并按自己的环境调整。
 
-安装插件只会把插件文件放进 Codex 管理的安装目录，**不会在终端当前目录创建 `plugins/devflow-skills/` 源码路径**。要运行本节的脚本，需要单独下载仓库。
+从远端安装插件不会在终端当前目录创建 `plugins/devflow-skills/` 源码路径。要运行本节的脚本，需要单独下载仓库。
 
 ### 1. 下载源码并进入仓库
 
@@ -68,7 +101,11 @@ cd devflow-skills
 python3 plugins/devflow-skills/scripts/install_profile.py
 ```
 
-默认只显示目标位置和计划操作，不修改配置。提示“内容已一致”时无需再导入。
+默认只显示 Codex 目标位置和计划操作，不修改配置。提示“内容已一致”时无需再导入。Devin 使用：
+
+```sh
+python3 plugins/devflow-skills/scripts/install_profile.py --agent devin
+```
 
 ### 3. 按需要写入或替换
 
@@ -78,13 +115,19 @@ python3 plugins/devflow-skills/scripts/install_profile.py
 python3 plugins/devflow-skills/scripts/install_profile.py --apply
 ```
 
+Devin 首次导入对应命令是 `python3 plugins/devflow-skills/scripts/install_profile.py --agent devin --apply`。已有不同规则时同样需要明确添加 `--replace`。
+
 如果提示已有不同规则，确认要替换后执行下面的命令；脚本会先备份原文件，并显示备份位置：
 
 ```sh
 python3 plugins/devflow-skills/scripts/install_profile.py --apply --replace
 ```
 
-`--apply` 表示实际写入，`--replace` 表示允许备份后替换已有不同规则。默认目标是 `~/.codex/AGENTS.md`；设置了 `CODEX_HOME` 时使用该目录下的 `AGENTS.md`，也可通过 `--codex-home /path/to/config` 指定目录。Windows 可用 `py -3` 替换 `python3`。导入工具需要 Python 3.9+，仅使用标准库。
+`--apply` 表示实际写入，`--replace` 表示允许备份后替换已有不同规则。默认宿主仍是 Codex，原来的命令继续有效：默认写入 `~/.codex/AGENTS.md`，设置了 `CODEX_HOME` 时使用该目录，也保留 `--codex-home /path/to/config` 参数。
+
+`--agent devin` 在 macOS / Linux 默认写入 `~/.config/devin/AGENTS.md`，Windows 写入 `%APPDATA%\devin\AGENTS.md`。两种宿主都可用 `--config-dir /path/to/config` 明确指定实际配置目录。`--codex-home` 不能与 `--agent devin` 混用；符号链接不会被覆盖，需要显式指定实际目标目录。全局规则在新会话开始时加载，见 [Devin 全局规则文档](https://docs.devin.ai/cli/extensibility/rules)。
+
+Windows 可用 `py -3` 替换 `python3`。导入工具需要 Python 3.9+，仅使用标准库；安装或更新插件不会执行此导入，也不会改写现有全局配置。
 
 如果报 `can't open file ... [Errno 2] No such file or directory`，说明 Python 没有找到脚本。检查是否完成了下载和 `cd devflow-skills`：`plugins/...` 是相对当前目录的路径，直接在 `~` 下运行会错误地寻找 `~/plugins/...`。这个报错发生在脚本启动前，不会修改全局规则。
 
@@ -92,24 +135,33 @@ python3 plugins/devflow-skills/scripts/install_profile.py --apply --replace
 
 ## 更新与维护
 
-使用 Git 仓库来源安装时：
+Codex 使用 Git 仓库来源安装时：
 
 ```sh
 codex plugin marketplace upgrade haokejie
 codex plugin add devflow-skills@haokejie
 ```
 
-更新后在新任务中使用。源码位于 `plugins/devflow-skills/`；本地开发时使用 plugin-creator 的缓存刷新和重装流程，不直接修改安装缓存。发布版本只在插件清单中维护。
+Codex 更新后在新任务中使用。Devin 远端来源安装后使用 `devin plugins update devflow-skills` 更新，再新建会话；本地目录安装直接链接源码，改动在新会话加载，不需要复制缓存。
 
-本项目采用内置 plugin-creator 支持的 `.codex-plugin/plugin.json` 兼容清单，三个 skill 不依赖 MCP 服务。
+源码位于 `plugins/devflow-skills/`；不要直接修改安装缓存。名称、版本和共享展示信息只维护 [通用清单](plugins/devflow-skills/plugin.json)。修改后运行：
+
+```sh
+python3 plugins/devflow-skills/scripts/sync_manifest.py --write
+```
+
+此命令生成 `.codex-plugin/plugin.json` 兼容清单；默认或 `--check` 只检查是否已同步，不写文件。保留兼容清单用于现有 Codex 市场和清单校验工具，直到这些入口全部支持通用格式后再评估移除。
+
+通用清单采用 [Agent Plugins 1.0.0](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json)，Codex 展示元数据位于 `extensions.com.openai.interface`。Devin 读取通用清单和同一份 `skills/`；三个技能不依赖 MCP 服务。
 
 ## 开发与验证
 
 ```sh
+python3 plugins/devflow-skills/scripts/sync_manifest.py --check
 python3 -m unittest discover -s tests -v
 ```
 
-测试覆盖偏好导入的预览、重复执行、覆盖与备份边界，以及插件目录和资源引用。发布前还需使用内置 plugin-creator 和 skill-creator 校验清单与 skill。项目约定见 [CONVENTIONS.md](CONVENTIONS.md)。
+测试覆盖两个宿主的偏好导入、旧参数兼容、预览、重复执行、覆盖与备份边界，以及双格式清单一致性、插件目录和资源引用。发布前还需使用内置 plugin-creator 和 skill-creator 校验清单与 skill，并按通用清单的官方 schema 校验格式。静态校验不代表已在 Devin 新会话完成运行验证。项目约定见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 反馈问题或提出改进可使用 [Issues](https://github.com/haokejie/devflow-skills/issues) 或 Pull Request。
 

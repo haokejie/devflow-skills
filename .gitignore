@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 /.codex/local.md
+/.devin/local.md
 /.env
 /.env.*
 !/.env.example
