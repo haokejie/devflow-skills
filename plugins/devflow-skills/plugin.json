@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "devflow-skills",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "面向 Codex 与 Devin 的开发流程插件，包含项目规范、设计方案、任务记录、Git 提交与禅道工作流五个 skill。",
   "author": {
     "name": "haokejie"

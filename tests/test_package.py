@@ -77,15 +77,18 @@ class PackageTests(unittest.TestCase):
         expected = {"project-conventions", "design-workflow", "task-workflow", "git-commit", "zentao-workflow"}
         self.assertEqual(expected, {p.name for p in skills.iterdir() if p.is_dir()})
         for name in expected:
-            self.assertTrue((skills / name / "SKILL.md").is_file())
-            self.assertTrue((skills / name / "agents/openai.yaml").is_file())
-        for path in skills.rglob("*.md"):
-            if "templates" in path.parts:
-                continue
-            content = re.sub(r"```[\s\S]*?```", "", path.read_text(encoding="utf-8"))
-            for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", content):
-                if "://" not in target and not target.startswith("#"):
-                    self.assertTrue((path.parent / target.split("#", 1)[0]).is_file(), (path, target))
+            skill = (skills / name).resolve()
+            self.assertTrue((skill / "SKILL.md").is_file())
+            self.assertTrue((skill / "agents/openai.yaml").is_file())
+            for path in skill.rglob("*.md"):
+                if "templates" in path.parts:
+                    continue
+                content = re.sub(r"```[\s\S]*?```", "", path.read_text(encoding="utf-8"))
+                for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", content):
+                    if "://" not in target and not target.startswith("#"):
+                        resource = (path.parent / target.split("#", 1)[0]).resolve()
+                        self.assertTrue(resource.is_relative_to(skill), (path, target, "资源必须属于本 skill"))
+                        self.assertTrue(resource.is_file(), (path, target))
 
 
 if __name__ == "__main__":

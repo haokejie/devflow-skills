@@ -16,7 +16,7 @@
 | `git-commit` | Git 提交 | 检查提交范围、相关规范和暂存内容，按授权生成信息或执行提交 |
 | `zentao-workflow` | 禅道工作流 | 复用界面中已连接的禅道 MCP 分析 Bug 与附件，明确要求修复才修改业务代码 |
 
-五个 skill 独立使用，不要求每次开发都走完整流程。仓库另提供可选的个人全局偏好模板，位于根目录 `profiles/`；导入与维护工具位于根目录 `scripts/`。插件目录只保留清单、skill 及其使用资源、展示图标和许可证。
+五个 skill 独立使用、独立启停，不要求每次开发都走完整流程，也不要求全部启用。仓库另提供可选的个人全局偏好模板，位于根目录 `profiles/`；导入与维护工具位于根目录 `scripts/`。插件目录只保留清单、skill 及其使用资源、展示图标和许可证。
 
 禅道 skill 使用当前会话已有的 `zentao_*` 工具，连接名称由客户端决定。插件不分发 MCP 服务器，不创建第二个连接或额外的凭证配置；禅道连接仍在宿主原生界面管理。
 
@@ -84,6 +84,22 @@ devin plugins install --local ./plugins/devflow-skills
 - 直接发送 `bug#1234` 或要求“使用 zentao-workflow 分析禅道 Bug 1234，先查看截图与附件”，会使用禅道 skill 做只读分析；“修复禅道 Bug 1234”才修改业务代码，回写禅道另需明确授权。
 
 若存在同名 skill，确认插件可用后停用重复副本。
+
+### 独立启用与停用
+
+Codex 桌面客户端在插件详情的技能列表中提供每个 skill 的独立开关；插件总开关控制整个插件。其他宿主的启停入口以其实际功能为准，插件不会另建开关配置。Codex 的技能启停由宿主管理，见 [技能文档](https://learn.chatgpt.com/docs/build-skills) 与 [App Server 接口](https://learn.chatgpt.com/docs/app-server)。
+
+| 单独启用 | 可以完成的工作 | 前提 |
+| --- | --- | --- |
+| `project-conventions` | 初始化、维护与检查项目通用规范 | 当前项目源码与配置 |
+| `design-workflow` | 整理、引用、检查和清理设计方案 | 对应设计资料；不强制创建任务记录 |
+| `task-workflow` | 规划、实施、继续与验收开发事项 | 当前项目；已有设计方案可直接引用 |
+| `git-commit` | 生成提交信息或按授权提交 | Git 仓库；已有规范直接读取 |
+| `zentao-workflow` | 分析禅道 Bug 与附件，按授权修复 | 已连接并可用的禅道 MCP |
+
+跨 skill 协作只在对方已启用、可用且确有需要时发生；停用后不通过读取其指令间接恢复流程。已有 `CONVENTIONS.md`、`DESIGN.md`、设计方案与任务记录仍可按需读取，MCP 连接也由宿主单独管理。禅道 skill 停用后，不再自动触发单独 `bug#1234` 的编号工作流。
+
+`allow_implicit_invocation: false` 只关闭自动匹配，显式调用仍可用，不能代替技能停用开关。全局模板已按启停状态约束入口；插件更新不会自动改写用户已导入的全局规则。
 
 ## 设计方案与开发事项
 
@@ -207,7 +223,7 @@ python3 scripts/sync_manifest.py --check
 python3 -m unittest discover -s tests -v
 ```
 
-测试覆盖目录选择、参数别名、预览、幂等、备份与覆盖边界，以及清单一致性、五个 skill 的资源引用和不分发禅道连接配置的边界。完整验证要求见 [CONVENTIONS.md](CONVENTIONS.md)。
+测试覆盖目录选择、参数别名、预览、幂等、备份与覆盖边界，以及清单一致性、五个 skill 的资源独立性和不分发禅道连接配置的边界。完整验证要求见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 反馈问题或提出改进可使用 [Issues](https://github.com/haokejie/devflow-skills/issues) 或 Pull Request。
 

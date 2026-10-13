@@ -13,6 +13,7 @@
 
 - 本仓库是维护源；安装缓存是运行副本，不反向覆盖源码。
 - 五个 skill 各自负责规范、设计方案、任务记录、提交和禅道工作流，按需加载参考资料；同一规则只在负责它的文档中维护。禅道 API、附件和写操作契约通过已连接 MCP 的 `zentao_get_workflow_guide` 按需读取，不复制 catalog 或维护第二套工具实现。连接和凭证始终由宿主原生 MCP 界面管理。
+- 每个 skill 必须可独立启用或停用，不依赖其他 skill 的启用状态或目录内资源；跨 skill 协作只在对方已启用、可用且任务确有需要时发生，不加载停用 skill 的指令绕过停用。启停状态由宿主管理，插件不维护第二套开关；停用 skill 不影响按需读取已有项目文档。
 - 设计方案默认是一份 `.design/<slug>/SPEC.md` 和按需保存的 `assets/`；项目通用设计规范仍在根目录 `DESIGN.md`，任务只引用方案。`.design` 默认作为本地资料，沿用项目明确的 Git 策略；新建且没有共享约定时添加项目级 `/.design/` 忽略。设计整理不自动创建任务，普通开发不自动建立方案目录；废弃方案清理先检查依据与有效引用。
 - 导入和清单同步工具使用 Python 3.9+ 标准库。`--config-dir` 指定目录，默认使用 `CODEX_HOME` 或 `~/.codex`；`--codex-home` 是同一参数的别名。不写死用户名。项目私有资料的位置与保存边界见 [全局模板的本地私有信息规则](profiles/global-agents.md#本地私有信息)。
 - 导入默认只预览；`--apply` 才写入。已有不同内容需要 `--replace`，替换前备份；相同内容重复导入不产生备份。
@@ -23,7 +24,7 @@
 ## 验证
 
 - `python3 scripts/sync_manifest.py --check`：核对生成清单与通用清单是否一致。
-- `python3 -m unittest discover -s tests -v`：验证目录选择、参数别名、预览、幂等、备份和覆盖边界，以及插件资源结构、双格式清单契约和不分发禅道连接配置的边界。
+- `python3 -m unittest discover -s tests -v`：验证目录选择、参数别名、预览、幂等、备份和覆盖边界，以及插件资源结构、各 skill 资源独立性、双格式清单契约和不分发禅道连接配置的边界。
 - 通用清单按 `$schema` 指向的官方 schema 校验；不得把 Codex 专有字段放到通用清单根层级。
 - 交付前使用当前内置 plugin-creator 的 `validate_plugin.py` 校验插件目录，使用 skill-creator 的 `quick_validate.py` 校验五个 skill。
 - 安装验收在新会话中确认插件和 skill 已加载；源码校验验证结构与格式。
