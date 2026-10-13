@@ -72,9 +72,9 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn("mcpServers", codex)
         self.assertNotIn("apps", codex)
 
-    def test_all_four_skills_are_shipped_with_resources(self):
+    def test_all_five_skills_are_shipped_with_resources(self):
         skills = PLUGIN / "skills"
-        expected = {"project-conventions", "task-workflow", "git-commit", "zentao-workflow"}
+        expected = {"project-conventions", "design-workflow", "task-workflow", "git-commit", "zentao-workflow"}
         self.assertEqual(expected, {p.name for p in skills.iterdir() if p.is_dir()})
         for name in expected:
             self.assertTrue((skills / name / "SKILL.md").is_file())

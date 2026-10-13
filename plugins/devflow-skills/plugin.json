@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "devflow-skills",
-  "version": "0.4.1",
-  "description": "面向 Codex 与 Devin 的开发流程插件，包含项目规范、任务记录、Git 提交与禅道工作流四个 skill。",
+  "version": "0.5.0",
+  "description": "面向 Codex 与 Devin 的开发流程插件，包含项目规范、设计方案、任务记录、Git 提交与禅道工作流五个 skill。",
   "author": {
     "name": "haokejie"
   },
@@ -13,8 +13,8 @@
     "com.openai": {
       "interface": {
         "displayName": "开发流程",
-        "shortDescription": "项目规范、任务记录、Git 提交与禅道工作流。",
-        "longDescription": "基于个人实践整理的 Codex 与 Devin 通用社区插件，通过四个独立 skill 帮助维护项目规范、记录开发事项、准备 Git 提交和处理禅道 Bug。禅道工作流复用用户在客户端界面中已连接的 MCP，不分发服务器或凭证配置。各项规则应按项目需要调整。非 OpenAI 或 Cognition 官方项目。",
+        "shortDescription": "项目规范、设计方案、任务记录、Git 提交与禅道工作流。",
+        "longDescription": "基于个人实践整理的 Codex 与 Devin 通用社区插件，通过五个独立 skill 帮助维护项目规范、整理设计方案与图纸、记录开发事项、准备 Git 提交和处理禅道 Bug。禅道工作流复用用户在客户端界面中已连接的 MCP，不分发服务器或凭证配置。各项规则应按项目需要调整。非 OpenAI 或 Cognition 官方项目。",
         "developerName": "haokejie",
         "websiteURL": "https://github.com/haokejie/devflow-skills",
         "composerIcon": "./assets/icon.png",
@@ -27,6 +27,7 @@
         ],
         "defaultPrompt": [
           "使用 project-conventions 检查当前项目规范。",
+          "使用 design-workflow 整理设计图与说明，作为后续开发依据。",
           "使用 task-workflow 规划一个开发事项。",
           "使用 git-commit 生成本次改动的提交信息。",
           "使用 zentao-workflow 分析禅道 Bug，先查看截图与附件。"

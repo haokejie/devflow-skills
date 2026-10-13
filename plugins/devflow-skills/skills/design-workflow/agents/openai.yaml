@@ -1,0 +1,4 @@
+interface:
+  display_name: "设计方案"
+  short_description: "整理设计图与方案说明供任务引用，按设计验收并清理已废弃方案"
+  default_prompt: "使用 $design-workflow 整理这些设计图和说明，作为后续开发事项的设计依据。"

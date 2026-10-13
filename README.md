@@ -2,7 +2,7 @@
 
 <img src="plugins/devflow-skills/assets/icon.png" alt="DevFlow Skills 图标" width="96" height="96" />
 
-面向 Codex 与 Devin 的轻量开发流程插件，包含项目规范、任务记录、Git 提交与禅道工作流四个 skill。
+面向 Codex 与 Devin 的轻量开发流程插件，包含项目规范、设计方案、任务记录、Git 提交与禅道工作流五个 skill。
 
 这是基于个人实践整理的社区项目，适合按自己的开发习惯调整。它提供可复用的流程说明和文档模板，具体执行依赖当前 AI 宿主与项目已有工具。非 OpenAI 或 Cognition 官方项目。
 
@@ -11,11 +11,12 @@
 | 调用 ID | 显示名称 | 用途 |
 | --- | --- | --- |
 | `project-conventions` | 项目开发规范 | 工程规范默认维护根目录 `CONVENTIONS.md`，UI 与交互规范默认维护 `DESIGN.md`；沿用已有明确入口 |
+| `design-workflow` | 设计方案 | 用一份 `SPEC.md` 和必要图纸保存开发依据，供任务引用，并清理无有效引用的废弃方案 |
 | `task-workflow` | 开发事项记录 | 用一份 `TASK.md` 记录目标、进度和验收，大型需求按需拆分 |
 | `git-commit` | Git 提交 | 检查提交范围、相关规范和暂存内容，按授权生成信息或执行提交 |
 | `zentao-workflow` | 禅道工作流 | 复用界面中已连接的禅道 MCP 分析 Bug 与附件，明确要求修复才修改业务代码 |
 
-四个 skill 独立使用，不要求每次开发都走完整流程。仓库另提供可选的个人全局偏好模板，位于根目录 `profiles/`；导入与维护工具位于根目录 `scripts/`。插件目录只保留清单、skill 及其使用资源、展示图标和许可证。
+五个 skill 独立使用，不要求每次开发都走完整流程。仓库另提供可选的个人全局偏好模板，位于根目录 `profiles/`；导入与维护工具位于根目录 `scripts/`。插件目录只保留清单、skill 及其使用资源、展示图标和许可证。
 
 禅道 skill 使用当前会话已有的 `zentao_*` 工具，连接名称由客户端决定。插件不分发 MCP 服务器，不创建第二个连接或额外的凭证配置；禅道连接仍在宿主原生界面管理。
 
@@ -59,10 +60,11 @@ devin plugins info devflow-skills
 devin plugins install --local ./plugins/devflow-skills
 ```
 
-安装后新建 Devin Local / CLI 会话使用。这四个技能的显式调用方式为：
+安装后新建 Devin Local / CLI 会话使用。这五个技能的显式调用方式为：
 
 ```text
 /devflow-skills:project-conventions
+/devflow-skills:design-workflow
 /devflow-skills:task-workflow
 /devflow-skills:git-commit
 /devflow-skills:zentao-workflow
@@ -76,11 +78,28 @@ devin plugins install --local ./plugins/devflow-skills
 
 - “使用 project-conventions 初始化项目规范”或“检查规范是否过期”。
 - “整理 UI 设计规范”或“检查本次界面修改是否符合项目约定”。整理时没有现成设计规范就创建根目录 `DESIGN.md`，已有明确入口则沿用；`CONVENTIONS.md` 只保留链接。普通页面开发和只读检查不自动建文档。
+- “整理这些设计图和说明，后续任务按它实现”使用 `design-workflow` 保存方案；“检查废弃设计”只读，“清理已废弃设计”才删除无有效引用的方案及专属资料。
 - “规划开发事项”只记录计划；“处理开发事项”进入实施；普通修复不自动创建 `.task`。
 - “生成提交信息”只读；“提交本次改动”才暂存和提交。
 - 直接发送 `bug#1234` 或要求“使用 zentao-workflow 分析禅道 Bug 1234，先查看截图与附件”，会使用禅道 skill 做只读分析；“修复禅道 Bug 1234”才修改业务代码，回写禅道另需明确授权。
 
 若存在同名 skill，确认插件可用后停用重复副本。
+
+## 设计方案与开发事项
+
+项目通用规范保存在根目录 `DESIGN.md`；具体功能的设计图与说明由 [design-workflow](plugins/devflow-skills/skills/design-workflow/SKILL.md) 维护，默认结构为：
+
+```text
+.design/order-management/
+  SPEC.md              # 适用范围、采用情况、图纸链接、说明与验收
+  assets/              # 有需要保存的图纸时才创建
+.task/order-list/
+  TASK.md              # 引用方案，记录进度与验证
+```
+
+一份方案可以供多个任务引用。任务记录链接方案、相关图纸和采用版本（有时），按设计开发前实际查看图纸，完成后检查渲染与交互；不重复抄写设计正文，也不强制建立审批、版本目录或任务集。已有明确入口和已确认方案直接沿用。
+
+`.design` 默认用于本地资料，新建且没有明确共享约定时添加项目级 `/.design/` 忽略规则；已有 Git 策略沿用。清理时保留仍被任务或文档使用的方案和共享图片，不把任务完成直接当成设计废弃。
 
 ## 禅道连接与使用
 
@@ -106,7 +125,7 @@ devin plugins install --local ./plugins/devflow-skills
 
 ## 可选：导入个人全局偏好
 
-这一步把 [偏好模板](profiles/global-agents.md) 写入当前机器的全局 `AGENTS.md`，按需使用。模板包含浏览器、CDP 和 Go 工具链习惯，并保留禅道 skill 的使用入口与授权边界，具体流程由 `zentao-workflow` 维护。请先按自己的环境调整。项目私有资料默认存放在项目根目录的 `.devflow/local.md`，已有入口时沿用。
+这一步把 [偏好模板](profiles/global-agents.md) 写入当前机器的全局 `AGENTS.md`，按需使用。模板包含浏览器、CDP 和 Go 工具链习惯，并保留设计方案与禅道 skill 的必要入口和边界，具体流程由相应 skill 维护。请先按自己的环境调整。项目私有资料默认存放在项目根目录的 `.devflow/local.md`，已有入口时沿用。
 
 偏好模板与导入脚本都位于仓库层。要执行本节的导入，需要单独下载仓库；安装插件不会提供全局偏好模板或维护工具。
 
@@ -179,7 +198,7 @@ python3 scripts/sync_manifest.py --write
 
 此命令生成 `.codex-plugin/plugin.json`；默认或 `--check` 只检查是否已同步，不写文件。
 
-通用清单采用 [Agent Plugins 1.0.0](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json)，Codex 展示元数据位于 `extensions.com.openai.interface`。Devin 读取通用清单和同一份 `skills/`；规范、任务和提交 skill 不依赖 MCP，禅道 skill 复用宿主已连接的 MCP。
+通用清单采用 [Agent Plugins 1.0.0](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json)，Codex 展示元数据位于 `extensions.com.openai.interface`。Devin 读取通用清单和同一份 `skills/`；规范、设计方案、任务和提交 skill 不依赖 MCP，禅道 skill 复用宿主已连接的 MCP。
 
 ## 开发与验证
 
@@ -188,7 +207,7 @@ python3 scripts/sync_manifest.py --check
 python3 -m unittest discover -s tests -v
 ```
 
-测试覆盖目录选择、参数别名、预览、幂等、备份与覆盖边界，以及清单一致性、四个 skill 的资源引用和不分发禅道连接配置的边界。完整验证要求见 [CONVENTIONS.md](CONVENTIONS.md)。
+测试覆盖目录选择、参数别名、预览、幂等、备份与覆盖边界，以及清单一致性、五个 skill 的资源引用和不分发禅道连接配置的边界。完整验证要求见 [CONVENTIONS.md](CONVENTIONS.md)。
 
 反馈问题或提出改进可使用 [Issues](https://github.com/haokejie/devflow-skills/issues) 或 Pull Request。
 
